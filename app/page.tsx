@@ -1,79 +1,78 @@
+"use client";
+
+import { useState } from "react";
+import { app } from "@/lib/firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
+const auth = getAuth(app);
+
 export default function Home() {
-  const creators = [
-    {
-      name: "Aarav Fitness",
-      category: "Fitness Coach",
-      followers: "120K",
-      price: "₹199/month",
-    },
-    {
-      name: "Riya Glam",
-      category: "Lifestyle Creator",
-      followers: "89K",
-      price: "₹299/month",
-    },
-    {
-      name: "Vikram Trader",
-      category: "Trading Mentor",
-      followers: "210K",
-      price: "₹499/month",
-    },
-  ];
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signup = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Signup Successful 🚀");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const login = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Login Successful 🔥");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <section className="px-6 py-20 max-w-7xl mx-auto">
-        <div className="text-center">
-          <h1 className="text-6xl font-black mb-6 bg-gradient-to-r from-pink-500 to-purple-500 text-transparent bg-clip-text">
-            FANVERSE
-          </h1>
+    <main className="min-h-screen bg-black flex items-center justify-center px-6">
+      <div className="w-full max-w-md bg-zinc-900 border border-white/10 rounded-3xl p-8">
+        <h1 className="text-4xl font-black text-center text-white mb-2">
+          FANVERSE
+        </h1>
 
-          <p className="text-2xl text-zinc-300 mb-10">
-            India’s Creator Monetization Platform
-          </p>
+        <p className="text-zinc-400 text-center mb-8">
+          Creator Monetization Platform
+        </p>
 
-          <div className="flex justify-center gap-4">
-            <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 font-bold text-lg">
-              Start Earning
-            </button>
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full mb-4 p-4 rounded-2xl bg-zinc-800 text-white outline-none"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-            <button className="px-8 py-4 rounded-2xl border border-white/20 text-lg">
-              Explore Creators
-            </button>
-          </div>
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full mb-6 p-4 rounded-2xl bg-zinc-800 text-white outline-none"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <div className="grid md:grid-cols-3 gap-6 mt-20">
-          {creators.map((creator) => (
-            <div
-              key={creator.name}
-              className="bg-zinc-900 border border-white/10 rounded-3xl p-6"
-            >
-              <div className="w-full h-52 rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 mb-5"></div>
+        <button
+          onClick={signup}
+          className="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold mb-4"
+        >
+          Sign Up
+        </button>
 
-              <h2 className="text-2xl font-bold">
-                {creator.name}
-              </h2>
-
-              <p className="text-zinc-400 mt-1">
-                {creator.category}
-              </p>
-
-              <div className="flex justify-between mt-6">
-                <span>{creator.followers} fans</span>
-
-                <span className="text-pink-400 font-bold">
-                  {creator.price}
-                </span>
-              </div>
-
-              <button className="w-full mt-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 font-bold">
-                Subscribe
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+        <button
+          onClick={login}
+          className="w-full py-4 rounded-2xl border border-white/20 text-white font-bold"
+        >
+          Login
+        </button>
+      </div>
     </main>
   );
 }
