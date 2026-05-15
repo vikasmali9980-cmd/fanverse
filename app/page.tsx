@@ -1,4 +1,4 @@
-"use client";
+"use client";import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { app } from "@/lib/firebase";
@@ -13,11 +13,11 @@ const auth = getAuth(app);
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter();
   const signup = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert("Signup Successful 🚀");
+      router.push("/dashboard");
     } catch (error: any) {
       alert(error.message);
     }
@@ -26,7 +26,7 @@ export default function Home() {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login Successful 🔥");
+      router.push("/dashboard");
     } catch (error: any) {
       alert(error.message);
     }
